@@ -92,6 +92,6 @@
       "eslint --fix",
       "git add"
     ],
-    "**/*.pcss": "stylelint",
+    "**/*.pcss": "stylelint"
   }
 }
