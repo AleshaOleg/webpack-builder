@@ -1,0 +1,20 @@
+[ignore]
+.*/__tests__/.*
+.*/node_modules/stylelint/.*
+.*/node_modules/stylelint-scss/.*
+
+[include]
+./src/**/*.\(js\|jsx\)/
+
+[libs]
+
+[lints]
+
+[options]
+module.file_ext=.css
+module.file_ext=.pcss
+module.file_ext=.js
+module.file_ext=.jsx
+module.file_ext=.json
+
+module.name_mapper='.*\.{css|pcss}$' -> './helpers/CSSModule'

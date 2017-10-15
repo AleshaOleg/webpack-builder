@@ -1,23 +1,58 @@
-var config = {
-  context: __dirname + '/src',
-  entry: './main.js',
+const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+module.exports = {
+  entry: './src/index.jsx',
   output: {
-    filename: 'script.js',
-    path: __dirname + "/build",
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+    publicPath: '/dist/',
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.pcss', '.css'],
   },
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['react', 'es2015']
-        }
-      }
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['react', 'es2015', 'stage-2'],
+          },
+        },
+      },
+      {
+        test: /\.(pcss|css)?$/,
+        use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: { importLoaders: 1 },
+            },
+            'postcss-loader',
+          ],
+        })),
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [
+          'url-loader?limit=10000',
+          'img-loader',
+        ],
+      },
     ],
-  }
+  },
+  devServer: {
+    compress: false,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+    historyApiFallback: true,
+  },
+  plugins: [
+    new ExtractTextPlugin('bundle.css'),
+  ],
 };
-
-module.exports = config;
